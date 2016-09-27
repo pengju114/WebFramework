@@ -4,7 +4,6 @@
  */
 package com.pj.web.filters;
 
-import com.pj.utilities.ArrayUtility;
 import com.pj.web.res.Constans;
 import java.io.IOException;
 import javax.servlet.Filter;

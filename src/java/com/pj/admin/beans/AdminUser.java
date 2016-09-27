@@ -4,7 +4,7 @@
  */
 package com.pj.admin.beans;
 
-import com.pj.admin.services.AdminService;
+import com.pj.admin.services.impl.AdminServiceImpl;
 import com.pj.jdbc.annotation.Column;
 import com.pj.jdbc.annotation.Table;
 import com.pj.jdbc.core.ResultList;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author lzw
  */
-@Table(name = AdminService.ADMIN_TABLE)
+@Table(name = AdminServiceImpl.ADMIN_TABLE)
 public class AdminUser {
     @Column(name ="admin_id",save = false)
     private Integer adminId;
@@ -164,7 +164,7 @@ public class AdminUser {
     }
     
     public List<Role> getRoles(){
-        AdminService service = new AdminService();
+        AdminServiceImpl service = new AdminServiceImpl();
         ResultList<Role> list = service.getRolesByAdminId(getAdminId());
         if (list != null) {
             return list.toList();
@@ -173,12 +173,12 @@ public class AdminUser {
     }
     
     public boolean hasAuthority(Authority authority){
-        AdminService service = new AdminService();
+        AdminServiceImpl service = new AdminServiceImpl();
         return service.hasAuthority(this, authority);
     }
     
     public ResultList<Authority> getAuthorities(){
-        AdminService service = new AdminService();
+        AdminServiceImpl service = new AdminServiceImpl();
         return service.getAuthoritiesByAdminId(getAdminId());
     }
 }

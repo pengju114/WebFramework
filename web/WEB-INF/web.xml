@@ -37,7 +37,7 @@
         <init-param>
             <description>要跳过的URI,逗号隔开多个</description>
             <param-name>skip</param-name>
-            <param-value>AdminLogin.action,AdminLogin</param-value>
+            <param-value>/admin/login.do</param-value>
         </init-param>
     </filter>
     <filter>
