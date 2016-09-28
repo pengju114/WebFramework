@@ -9,7 +9,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@taglib uri="/struts-tags" prefix="s" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,7 +38,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <form style="margin-top: 12px;" action="<s:url action="FindAdmin" />" method="post" name="find_admin" target="I2">
+                                <form style="margin-top: 12px;" action="${contextPath}/admin/listAdmins.do" method="post" name="find_admin" target="I2">
                                     请输入管理员名字:<input onfocus="this.select()" type="text" size="20" maxlength="100" name="adminName" value="${adminName}" />
                                     <input type="submit" value="搜索" />
                                 </form>
@@ -125,7 +124,7 @@
                                                     var statusDlg = new Dialog("提示", "正在删除...", true);
                                                     statusDlg.show();
 
-                                                    ajax({url: "<s:url action="DeleteAdmin" namespace="/admin" />", method: "POST", data: "adminIds=" + ids.join("&adminIds=")}).getText(function (msg) {
+                                                    ajax({url: "${contextPath}/admin/deleteAdmin.do", method: "POST", data: "adminIds=" + ids.join("&adminIds=")}).getText(function (msg) {
 
                                                         statusDlg.close();
                                                         var dlg = new Dialog(null, "", true);
@@ -155,7 +154,7 @@
                                                     }
                                                 });
                                                 
-                                                ajax({url: "<s:url action="DeleteAdmin" namespace="/admin" />", method: "POST", data: "adminIds=" + this.getAttribute("aid")}).getText(function (msg) {
+                                                ajax({url: "${contextPath}/admin/deleteAdmin.do", method: "POST", data: "adminIds=" + this.getAttribute("aid")}).getText(function (msg) {
                                                     var dlg = new Dialog(null, "", true);
                                                     if (msg == "OK") {
                                                         dlg.setContent("删除成功");

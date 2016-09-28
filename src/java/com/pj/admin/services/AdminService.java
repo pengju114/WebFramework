@@ -9,13 +9,11 @@ import com.pj.admin.beans.Authority;
 import com.pj.admin.beans.Role;
 import com.pj.jdbc.core.ResultList;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author lzw
  */
-@Component
 public interface AdminService {
     
     

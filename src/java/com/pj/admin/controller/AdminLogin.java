@@ -11,12 +11,13 @@ import com.pj.utilities.ImageUtility;
 import com.pj.utilities.StringUtility;
 import com.pj.web.res.Constans;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,12 +36,16 @@ public class AdminLogin {
 
     @RequestMapping(path = "/login.do")
     public Object login(
-            @RequestParam(name = "validationCode", required = true) String validationCode,
-            @RequestParam(name = "userName", required = true) String userName,
-            @RequestParam(name = "password", required = true) String pwd,
-            BindingResult result, HttpServletRequest request, HttpSession session) {
-        if (result.hasErrors()) {
-            request.setAttribute("error", result.toString());
+            @RequestParam(name = "validationCode") String validationCode,
+            @RequestParam(name = "userName") String userName,
+            @RequestParam(name = "password") String pwd,
+            HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        if (StringUtility.isEmpty(validationCode)) {
+            request.setAttribute("error", "请输入验证码");
+        } else if(StringUtility.isEmpty(userName)){
+            request.setAttribute("error", "请输入用户名");
+        } else if(StringUtility.isEmpty(pwd)){
+            request.setAttribute("error", "请输入密码");
         } else {
 
             if (StringUtility.isEmpty(validationCode) || !StringUtility.ensureAsString(session.getAttribute(ImageUtility.RandomCodeImageRanderer.RANDOM_STRING)).equalsIgnoreCase(validationCode)) {
@@ -49,7 +54,14 @@ public class AdminLogin {
                 AdminUser user = adminService.findAdminUserByNameAndPassword(userName, pwd);
                 if (user != null) {
                     session.setAttribute(Constans.Key.CURRENT_ADMIN, user);
-                    return new ModelAndView(new InternalResourceView("/admin/main.jsp"));
+                    session.setAttribute("admin", user);
+                    try {
+                        //                    return new ModelAndView(new InternalResourceView("/admin/main.jsp"));
+                        response.sendRedirect(request.getContextPath()+"/admin/main.jsp");
+                    } catch (IOException ex) {
+                        Logger.getLogger(AdminLogin.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    return null;
                 } else {
                     request.setAttribute("error", "用户名或密码错误");
                 }
@@ -60,8 +72,8 @@ public class AdminLogin {
     }
     
     @RequestMapping(path = "/logout.do")
-    public void logout(HttpServletResponse response, HttpSession session) throws IOException{
+    public void logout(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws IOException{
         session.invalidate();
-        response.sendRedirect("/admin.jsp");
+        response.sendRedirect(request.getContextPath()+"/admin.jsp");
     }
 }

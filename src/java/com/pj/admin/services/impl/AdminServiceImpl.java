@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  *
  * @author lzw
  */
-@Service
+@Service("adminService")
 public class AdminServiceImpl extends BaseService implements AdminService{
     public static final String ADMIN_TABLE="t_admin";
     public static final String ROLE_TABLE="t_role";

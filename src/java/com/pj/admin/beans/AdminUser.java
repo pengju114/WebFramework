@@ -4,10 +4,12 @@
  */
 package com.pj.admin.beans;
 
+import com.pj.admin.services.AdminService;
 import com.pj.admin.services.impl.AdminServiceImpl;
 import com.pj.jdbc.annotation.Column;
 import com.pj.jdbc.annotation.Table;
 import com.pj.jdbc.core.ResultList;
+import com.pj.listener.SpringContextListener;
 import java.util.Date;
 import java.util.List;
 
@@ -164,7 +166,7 @@ public class AdminUser {
     }
     
     public List<Role> getRoles(){
-        AdminServiceImpl service = new AdminServiceImpl();
+        AdminService service = SpringContextListener.getSpringContext().getBean(AdminService.class);
         ResultList<Role> list = service.getRolesByAdminId(getAdminId());
         if (list != null) {
             return list.toList();
@@ -173,12 +175,12 @@ public class AdminUser {
     }
     
     public boolean hasAuthority(Authority authority){
-        AdminServiceImpl service = new AdminServiceImpl();
+        AdminService service = SpringContextListener.getSpringContext().getBean(AdminService.class);
         return service.hasAuthority(this, authority);
     }
     
     public ResultList<Authority> getAuthorities(){
-        AdminServiceImpl service = new AdminServiceImpl();
+        AdminService service = SpringContextListener.getSpringContext().getBean(AdminService.class);
         return service.getAuthoritiesByAdminId(getAdminId());
     }
 }
